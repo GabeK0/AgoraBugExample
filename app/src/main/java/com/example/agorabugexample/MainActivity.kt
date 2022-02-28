@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun connect() {
+        // TODO: Please use your own agora ID here
         val agoraAppId = resources.getString(R.string.agora_id)
 
         try {
