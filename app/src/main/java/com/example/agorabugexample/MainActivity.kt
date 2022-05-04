@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.SyncStateContract
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -11,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import io.agora.rtc.Constants
+import io.agora.rtc.Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
+import io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER
 import io.agora.rtc.IRtcEngineEventHandler
 import io.agora.rtc.RtcEngine
 
@@ -55,14 +58,14 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivity", "Error creating agora room: $e")
         }
 
-        mRtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
+        mRtcEngine?.setChannelProfile(CHANNEL_PROFILE_LIVE_BROADCASTING)
         mRtcEngine?.disableVideo()
         mRtcEngine?.setDefaultAudioRoutetoSpeakerphone(true)
         mRtcEngine?.enableAudioVolumeIndication(200, 3, true)
 
 
         val joined = mRtcEngine?.joinChannel(
-            "00610f0a94905f7422280018bfc5e5c070bIAAG1a8HdQhYibKHNcajRZ74TCFQSv6fou65FeP9cXsgXQx+f9gAAAAAEAClV51H9m0eYgEAAQD2bR5i",
+            "00610f0a94905f7422280018bfc5e5c070bIAC893Ep2ZBU5ik8U29sBo0pqkm50UzB3kUEKR/HMGxhZAx+f9gAAAAAEACf/BrpvAx0YgEAAQC8DHRi",
             "test",
             "",
             0
@@ -98,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     fun setClientRoleBroadcaster() {
         if (mRtcEngine == null)
             return
-        mRtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+        mRtcEngine?.setClientRole(CLIENT_ROLE_BROADCASTER)
         Toast.makeText(this, "Set client role broadcaster", Toast.LENGTH_SHORT).show()
     }
 
