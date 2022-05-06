@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val joined = mRtcEngine?.joinChannel(
-            "00610f0a94905f7422280018bfc5e5c070bIAC893Ep2ZBU5ik8U29sBo0pqkm50UzB3kUEKR/HMGxhZAx+f9gAAAAAEACf/BrpvAx0YgEAAQC8DHRi",
+            "00610f0a94905f7422280018bfc5e5c070bIACPe3rhPgXRcXUMA8Q/A5wwRP6s/o0Co4kbdvO82ahEqgx+f9gAAAAAEAAoVXS2D4t2YgEAAQAPi3Zi",
             "test",
             "",
             0
