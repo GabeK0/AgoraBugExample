@@ -2,20 +2,20 @@ package com.example.agorabugexample
 
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.SyncStateContract
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import io.agora.rtc.Constants
-import io.agora.rtc.Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
-import io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER
+import io.agora.rtc.Constants.*
 import io.agora.rtc.IRtcEngineEventHandler
 import io.agora.rtc.RtcEngine
+import io.agora.rtc.RtcEngineConfig
+import io.agora.rtc.RtcEngineConfig.LogConfig
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,20 +52,34 @@ class MainActivity : AppCompatActivity() {
         // TODO: Please use your own agora ID here
         val agoraAppId = resources.getString(R.string.agora_id)
 
+        val path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath + "/test.log"
+        val logConfig = LogConfig()
+        logConfig.level = LogLevel.getValue(LogLevel.LOG_LEVEL_INFO)
+
+        Log.i(this::class.java.simpleName, "Setting agora log path $path")
+        logConfig.filePath = path
+        logConfig.fileSize = 2048
+
+        val config = RtcEngineConfig()
+        config.mAppId = agoraAppId
+        config.mEventHandler = mRtcEventHandler
+        config.mContext = this
+        config.mLogConfig = logConfig
+
         try {
-            mRtcEngine = RtcEngine.create(this, agoraAppId, mRtcEventHandler)
+            mRtcEngine = RtcEngine.create(config)
         } catch (e: Exception) {
-            Log.e("MainActivity", "Error creating agora room: $e")
+            Log.e(this::class.java.simpleName, "Error creating agora room: $e")
         }
 
         mRtcEngine?.setChannelProfile(CHANNEL_PROFILE_LIVE_BROADCASTING)
         mRtcEngine?.disableVideo()
         mRtcEngine?.setDefaultAudioRoutetoSpeakerphone(true)
         mRtcEngine?.enableAudioVolumeIndication(200, 3, true)
-
+        mRtcEngine?.setParameters("{\"che.audio.force.bluetooth.a2dp\":0}")
 
         val joined = mRtcEngine?.joinChannel(
-            "00610f0a94905f7422280018bfc5e5c070bIACPe3rhPgXRcXUMA8Q/A5wwRP6s/o0Co4kbdvO82ahEqgx+f9gAAAAAEAAoVXS2D4t2YgEAAQAPi3Zi",
+            "00610f0a94905f7422280018bfc5e5c070bIACi2sqLOXS82MAFSFDmZFyGp1b0NR89M2ycZRhg/ISe3gx+f9gAAAAAEAA4smrcIet/YgEAAQAh639i",
             "test",
             "",
             0
